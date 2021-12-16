@@ -9,7 +9,7 @@ Siguiendo esa logica, usare entonces Flask como motor web durante la etapa de de
 
 Adicionalmente y para tener un microservicio que pueda ser implementado no solo en AWS sino en varias otras plataformas, como Google Cloud, Microsoft Azure e incluso desplegado en una infraestructura dedicada (OVH,100TB,etc.) o utilizando un orquestador como kubernetes, se decide utilizar Docker como plataforma de virtualizacion/contenedor.
 
-Como parte final, para el microservicio final, decido utilizar Nginx como proxy WSGI dentro del respectivo contenedor docker, esto para mostrar un ejemplo de arquitectura, pero dejando tambien abierta la posiblidad de que se pueda dejar el contenedor docker solo como servidor WSGI (sin Nginx) modificando un de archivo de configuracion y modificando el Dockerfile. 
+Como parte final, para el microservicio final, decido utilizar Nginx como proxy WSGI dentro del respectivo contenedor docker, esto para mostrar un ejemplo de arquitectura, pero dejando tambien abierta la posiblidad de que se pueda dejar el contenedor docker solo como servidor WSGI (sin Nginx) modificando un de archivo de configuracion y modificando el Dockerfile.
 
 Para la configuracion de las credenciales de la base de datos, se utiliza el enfoque de almacenarlas como variables de entorno, por lo que pienso permitir dos enfoques:
 
@@ -84,7 +84,7 @@ Veo entonces la relacion entre las tres tablas y propongo lo siguiente:
 
 - Si bien la solicitud indica que los filtros requeridos son: Año de construcción, Ciudad, Estado. Viendo el esquema veo que se puede ampliar a filtrar por ID, descripcion y direccion, por lo que se incluyen los campos en los filtros posibles
 - Defino 3 tipos de datos que podemos filtrar:
-    - numeros: como el año de contruccion, el precio y el id 
+    - numeros: como el año de contruccion, el precio y el id
     - textos: como direccion, ciudad, descripcion
     - texto fijo: en este caso solo el campo `status` o estado esta aqui, ya que las consulta de estado solo deberian permitir un rango especifico de valores
 
@@ -145,8 +145,8 @@ Una vez que tenemos el documento basico, podemos ir generando una estructura par
 
     - *sign* (opcional): Solo obligatorio si el tipo de filtro (type) es "sign" (string). Valores posibles: "=","<","<=",">",">="
 
-    - *value* (obligatorio)         Valor con el cual hacer la comparacion. El tipo de valor puede ser number, string o array. 
-        - En caso de que el tipo de filtro sea "rank", el valor debe ser un Array que contenga el par [Valor_minimo,Valor_maximo] ambos de tipo numerico. 
+    - *value* (obligatorio)         Valor con el cual hacer la comparacion. El tipo de valor puede ser number, string o array.
+        - En caso de que el tipo de filtro sea "rank", el valor debe ser un Array que contenga el par [Valor_minimo,Valor_maximo] ambos de tipo numerico.
         - Los campos a filtrar number y text el tipo de dato enviado debera coincidir con el tipo de valor que se encuentra en el campo filtrado (string, number, etc).
         - En caso de que el tipo de filtro sea "in", el valor debe ser un Array que contenga los valores (texto o numerico) en los cuales el valor pueda estar, por ejemplo, ["preventa","venta"]
 
@@ -162,7 +162,15 @@ Una vez que tenemos el documento basico, podemos ir generando una estructura par
    - *count*: Total de Resultados Filtrados (incluye el resultado de filtrar y se puede usar como auxiliar en temas de paginado, no solo los que se solicitan en length)
    - *result*: Arreglo del resultado con los campos solicitados
 
-##### Ejemplo de JSON de Consulta
+**NOTA IMPORTANTE PARA PRUEBAS**
+
+Las pruebas usando Flask serian usando el Endpoint http://localhost:5000/list
+
+Las pruebas usando Docker/Nginx serian usando el Endpoint http://localhost/list
+
+Ambos usando el tipo POST en los request
+
+##### Ejemplo de JSON de Consulta tipo POST
 
 ```json
 {
@@ -313,7 +321,7 @@ Para arrancar el entorno de desarrollo ingresamos:
 cd src/
 python3 main.py
 ```
-Lo que nos iniciara una instancia en el puerto 5000, con el que podemos proceder a las pruebas 
+Lo que nos iniciara una instancia en el puerto 5000, con el que podemos proceder a las pruebas usando el endpoint http://localhost:5000/list [POST]
 
 ### Conversion a uWSGI
 
@@ -422,7 +430,7 @@ Se proponen dos posibles cambios al esquema actual para reducir la velocidad de 
 Seria agregar a la tabla `property` el campo `status` que almacenaria el id del ultimo estado conocido de la propiedad
 
 ```sql
-ALTER TABLE `property`  ADD COLUMN `status` int(11) NOT NULL ; 
+ALTER TABLE `property`  ADD COLUMN `status` int(11) NOT NULL ;
 ALTER TABLE `property`  ADD FOREIGN KEY (`status`) REFERENCES `status`(`id`);
 ```
 
@@ -433,7 +441,7 @@ Implicaria cambiar la logica del servicio que almacena/actualiza el estado, pero
 Seria agregar a la tabla `property` el campo `last_status` que almacenaria el id del ultimo estado conocido de la propiedad respecto a la tabla `status_history`
 
 ```sql
-ALTER TABLE `property`  ADD COLUMN `last_status` int(11) NOT NULL ; 
+ALTER TABLE `property`  ADD COLUMN `last_status` int(11) NOT NULL ;
 ALTER TABLE `property`  ADD FOREIGN KEY (`last_status`) REFERENCES `status_history`(`id`);
 ```
 
@@ -461,12 +469,3 @@ CREATE TABLE `likes_history` (
 * Ver archivo MERLike.png
 
 Se propone esta estructura ya que de esta forma podemos tener no solo un historial de likes, sino que permite generar reportes de propiedades mas gustadas no solo de forma global, sino en linea de tiempo, guardando pocos datos y por lo mismo teniendo consultas ligeras.
-
-
-
-
-
-
-
-
-
