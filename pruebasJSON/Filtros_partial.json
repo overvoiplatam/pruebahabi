@@ -1,0 +1,10 @@
+{
+    "filters":[
+        {
+            "field":"address",
+            "type":"partial",
+            "value":"cerritos"
+        }
+    ]
+}  
+ 

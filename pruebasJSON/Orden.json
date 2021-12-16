@@ -1,0 +1,6 @@
+{
+    "order":[
+        {"field":"city","direction":"desc"},
+        {"field":"id","direction":"asc"}
+    ]
+} 

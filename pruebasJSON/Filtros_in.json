@@ -1,0 +1,9 @@
+{
+    "filters":[
+        {
+            "field":"status",
+            "type":"in",
+            "value":["en_venta","vendido"]
+        }
+    ]
+}   

@@ -1,0 +1,22 @@
+{
+    "fields":["id","address","status"],
+    "filters":[
+        {
+            "field":"id",
+            "type":"sign",
+            "value":5,
+            "sign":">"
+        },
+        {
+            "field":"status",
+            "type":"in",
+            "value":["pre_venta"]
+        }
+    ],
+    "order":[
+        {"field":"id","direction":"desc"},
+        {"field":"city","direction":"desc"}
+    ],
+    "start":3,
+    "length":100
+} 

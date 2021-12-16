@@ -1,0 +1,9 @@
+{
+    "filters":[
+        {
+            "field":"year",
+            "type":"rank",
+            "value":[2019,2020]
+        }
+    ]
+}  

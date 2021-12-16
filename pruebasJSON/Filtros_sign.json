@@ -1,0 +1,10 @@
+{
+    "filters":[
+        {
+            "field":"id",
+            "type":"sign",
+            "value":5,
+            "sign":">"
+        }
+    ]
+} 

@@ -1,0 +1,7 @@
+Crear imagen docker:
+
+docker build --tag habi_api_rest .
+
+Correr Imagen Docker:
+
+docker run -p 80:80 --env-file src/.env habi_api_rest
